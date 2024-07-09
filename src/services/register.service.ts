@@ -33,7 +33,6 @@ export class RegisterService {
     async getRegisterEventByUserId(userId:ObjectId){
         try {
             const newUserId=userId.toString();
-            console.log(newUserId);
             const responsedata=await Register.aggregate([
                 {
                   $lookup: {

@@ -42,7 +42,23 @@ export class EventService {
     }
     async getEvents(){
         try {
-            const response=await Event.find({})
+            const response=await Event.aggregate([
+                {
+                  $lookup: {
+                    from: "registers",
+                    localField: "_id",
+                    foreignField: "eventId",
+                    as: "eventDetails"
+                  }
+                },
+                {
+                  $addFields: {
+                    totalUser: {
+                      $size: "$eventDetails"
+                    }
+                  }
+                }
+              ])
             if(response){
                 return {status:true,statusCode:200,content:response,length:response.length}
             }else{
